@@ -3,7 +3,8 @@
 
 
     <form action="/episodes" method="POST">
-        {{ csrf_field() }}        
+        {{ csrf_field() }}
+        <input type="hidden" name="episode_id" value="{{ $episode->number }}">        
         <div>   
             @foreach ($boys as $boys)
             {{ $boys->name }}

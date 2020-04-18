@@ -37,13 +37,13 @@ class EpisodeController extends Controller
         return view("episodes.show", ["episode" => $episode, "boys" => $boys, "girls" => $girls]);
     }
 
-    public function store()
+    public function store(Episode $episode)
     {
-        $pair = Pair::where('boys_id', request("boys_id"))->where('girls_id', request("girls_id"))->exists();
+        $pair = Pair::where("episode_id", request("episode_id"))->where('boys_id', request("boys_id"))->where('girls_id', request("girls_id"))->exists();
         if ($pair) {
-            Pair::where('boys_id', request("boys_id"))->where('girls_id', request("girls_id"))->increment("count");    
+            Pair::where("episode_id", request("episode_id"))->where('boys_id', request("boys_id"))->where('girls_id', request("girls_id"))->increment("count");    
         } else {
-            $newPair = new Pair(request(['boys_id', 'girls_id']));
+            $newPair = new Pair(request(['boys_id', 'girls_id', 'episode_id']));
             $newPair->count = 1;
             $newPair->save();  
         }
