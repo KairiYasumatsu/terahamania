@@ -56,4 +56,22 @@ class EpisodeController extends Controller
         $selected_member = Member::find($id);
         return $selected_member;
     }
+
+    public function getMemberbyEpisode(Request $request)
+    {
+        $men_member = Episode::find($request->id)->members->where('sex', 1);
+        $boys = array();
+        foreach ($men_member as $member) {
+            $memberinfo = $this->getMemberbyId($member->id);
+            array_push($boys, $memberinfo);
+        }
+
+        $women_member = Episode::find($request->id)->members->where('sex', 2);
+        $girls = array();
+        foreach ($women_member as $member) {
+            $memberinfo = $this->getMemberbyId($member->id);
+            array_push($girls, $memberinfo);
+        }
+        return response()->json(['boys' => $boys, 'girls' => $girls],200,[],JSON_UNESCAPED_UNICODE);    
+    }
 }
