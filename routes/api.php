@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EpisodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//全てのエピソードを返すapi
+
+Route::get('/episodes', function(Request $request){
+    $episodes = App\Episode::all();
+    return response()->json(['episodes' => $episodes]);
+});
+
+//取得したidにひもづくメンバーを返すapi
+
+Route::get('/episode/{id}', 'EpisodeController@getMemberByEpisode');
