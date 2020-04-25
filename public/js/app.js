@@ -1899,10 +1899,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersCard.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MembersCard.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1923,7 +1923,35 @@ __webpack_require__.r(__webpack_exports__);
       type: Array
     }
   },
-  name: 'MembersCard'
+  name: 'EpisodesCards'
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersTable.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MembersTable.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    members: Object
+  },
+  name: 'MembersTable'
 });
 
 /***/ }),
@@ -1937,7 +1965,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_MembersCard_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MembersCard.vue */ "./resources/js/components/MembersCard.vue");
+/* harmony import */ var _components_MembersTable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MembersTable.vue */ "./resources/js/components/MembersTable.vue");
+/* harmony import */ var _components_EpisodesCards_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/EpisodesCards.vue */ "./resources/js/components/EpisodesCards.vue");
+//
 //
 //
 //
@@ -1945,10 +1975,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      episodes: []
+      episodes: [],
+      selectedMembers: {}
     };
   },
   created: function created() {
@@ -1956,14 +1988,34 @@ __webpack_require__.r(__webpack_exports__);
 
     console.log(this.episodes);
     axios.get('/api/episodes/').then(function (response) {
-      return _this.episodes = response.data.episodes;
+      _this.episodes = response.data.episodes;
+      console.log(response.data.episodes[response.data.episodes.length - 2].id);
+      return response.data.episodes[response.data.episodes.length - 2].id;
+    }).then(function (id) {
+      console.log(id);
+      axios.get('/api/episode/' + id).then(function (response) {
+        return _this.selectedMembers = response.data;
+      });
     })["catch"](function (response) {
       return console.log(response);
     });
   },
-  name: 'top',
+  methods: {
+    showEpisodeDetail: function showEpisodeDetail(index) {
+      var _this2 = this;
+
+      console.log(index);
+      axios.get('/api/episode/' + index).then(function (response) {
+        return _this2.selectedMembers = response.data;
+      })["catch"](function (response) {
+        return console.log(response);
+      });
+    }
+  },
+  name: 'Top',
   components: {
-    MembersCard: _components_MembersCard_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    episodesCards: _components_EpisodesCards_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    membersTable: _components_MembersTable_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -37611,10 +37663,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4&":
-/*!**************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4& ***!
-  \**************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90& ***!
+  \****************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37628,15 +37680,67 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.episodes, function(episode) {
+    _vm._l(_vm.episodes, function(episode, index) {
       return _c("div", { key: episode.id }, [
-        _c("div", [_vm._v(_vm._s(episode.number))]),
+        _c("span", [_vm._v("シリーズ番号" + _vm._s(episode.series_id))]),
         _vm._v(" "),
-        _c("div", [_vm._v(_vm._s(episode.series_id))])
+        _c(
+          "button",
+          {
+            on: {
+              click: function($event) {
+                return _vm.$emit("selectEpisode", index)
+              }
+            }
+          },
+          [_vm._v("エピソード番号" + _vm._s(episode.number))]
+        )
       ])
     }),
     0
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("table", { attrs: { border: "1" } }, [
+    _c(
+      "tr",
+      { staticClass: "boys-row" },
+      _vm._l(_vm.members.boys, function(boy) {
+        return _c("td", { key: boy.id }, [_vm._v("名前:" + _vm._s(boy.name))])
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c(
+      "tr",
+      { staticClass: "girls-row" },
+      _vm._l(_vm.members.girls, function(girl) {
+        return _c("td", { key: girl.id }, [_vm._v("名前:" + _vm._s(girl.name))])
+      }),
+      0
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37662,7 +37766,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("MembersCard", { attrs: { episodes: _vm.episodes } })],
+    [
+      _c("members-table", { attrs: { members: _vm.selectedMembers } }),
+      _vm._v(" "),
+      _c("episodes-cards", {
+        attrs: { episodes: _vm.episodes },
+        on: { selectEpisode: _vm.showEpisodeDetail }
+      })
+    ],
     1
   )
 }
@@ -49842,8 +49953,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Top__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pages/Top */ "./resources/js/pages/Top.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.min.js");
-/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.min.js");
+/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_axios__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -49873,7 +49984,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_3___default.a, axios__WEBPACK_IMPORTED_MODULE_1___default.a);
+Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_2___default.a, axios__WEBPACK_IMPORTED_MODULE_1___default.a);
 var app = new Vue({
   el: '#app',
   components: {
@@ -49928,17 +50039,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/components/MembersCard.vue":
-/*!*************************************************!*\
-  !*** ./resources/js/components/MembersCard.vue ***!
-  \*************************************************/
+/***/ "./resources/js/components/EpisodesCards.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/EpisodesCards.vue ***!
+  \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MembersCard.vue?vue&type=template&id=23471ba4& */ "./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4&");
-/* harmony import */ var _MembersCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MembersCard.vue?vue&type=script&lang=js& */ "./resources/js/components/MembersCard.vue?vue&type=script&lang=js&");
+/* harmony import */ var _EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EpisodesCards.vue?vue&type=template&id=166f4a90& */ "./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90&");
+/* harmony import */ var _EpisodesCards_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EpisodesCards.vue?vue&type=script&lang=js& */ "./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -49948,9 +50059,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _MembersCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _EpisodesCards_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -49960,38 +50071,107 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/MembersCard.vue"
+component.options.__file = "resources/js/components/EpisodesCards.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/MembersCard.vue?vue&type=script&lang=js&":
-/*!**************************************************************************!*\
-  !*** ./resources/js/components/MembersCard.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************/
+/***/ "./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MembersCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersCard.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EpisodesCards_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./EpisodesCards.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EpisodesCards.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EpisodesCards_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4& ***!
-  \********************************************************************************/
+/***/ "./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90& ***!
+  \**********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MembersCard.vue?vue&type=template&id=23471ba4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersCard.vue?vue&type=template&id=23471ba4&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./EpisodesCards.vue?vue&type=template&id=166f4a90& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/EpisodesCards.vue?vue&type=template&id=166f4a90&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersCard_vue_vue_type_template_id_23471ba4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EpisodesCards_vue_vue_type_template_id_166f4a90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MembersTable.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/MembersTable.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MembersTable.vue?vue&type=template&id=77e69ba0& */ "./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0&");
+/* harmony import */ var _MembersTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MembersTable.vue?vue&type=script&lang=js& */ "./resources/js/components/MembersTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MembersTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/MembersTable.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/MembersTable.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/MembersTable.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MembersTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersTable.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MembersTable.vue?vue&type=template&id=77e69ba0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MembersTable.vue?vue&type=template&id=77e69ba0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MembersTable_vue_vue_type_template_id_77e69ba0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
