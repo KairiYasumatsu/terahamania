@@ -37689,7 +37689,7 @@ var render = function() {
           {
             on: {
               click: function($event) {
-                return _vm.$emit("selectEpisode", index)
+                return _vm.$emit("selectEpisode", index + 1)
               }
             }
           },
