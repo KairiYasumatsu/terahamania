@@ -20,12 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //全てのエピソードを返すapi
-
 Route::get('/episodes', function(Request $request){
     $episodes = App\Episode::all();
     return response()->json(['episodes' => $episodes]);
 });
 
 //取得したidにひもづくメンバーを返すapi
-
 Route::get('/episode/{id}', 'EpisodeController@getMemberByEpisode');
+
+//最新のエピソード10件に対するpairを全て取得
+Route::get('/latestpair', 'PairController@getLatestPair');
