@@ -17,7 +17,9 @@ class CreatePairsTable extends Migration
             $table->id();
             $table->integer('boys_id');
             $table->integer('girls_id');
+            $table->integer('key_ids');
             $table->integer('count');
+            $table->integer('episode_id');
             $table->timestamps();
         });
     }
