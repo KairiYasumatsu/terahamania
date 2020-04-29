@@ -1,5 +1,6 @@
 <template>
     <div>
+        <count-line-chart style="width:50%;" v-bind:jsonData="jsonData"></count-line-chart>
         <members-table v-bind:members="selectedMembers"></members-table>
         <episodes-cards v-on:selectEpisode="showEpisodeDetail" v-bind:episodes="episodes"></episodes-cards>
     </div>
@@ -8,11 +9,13 @@
 <script>
 import membersTable from '../components/MembersTable.vue'
 import episodesCards from '../components/EpisodesCards.vue'
+import countLineChart from '../components/CountLineChart.vue'
 export default {
     data(){
         return{
             episodes: [],
-            selectedMembers: {}
+            selectedMembers: {},
+            jsonData: {}
         }
     },
     created: function () {
@@ -29,6 +32,15 @@ export default {
             .then(response => this.selectedMembers = response.data)
         })
         .catch(response => console.log(response))
+
+        axios.get('/api/latestpair/')
+        .then((response)=>{
+            this.jsonData = response.data[0]
+            // console.log('hoge',this.jsonData)
+        })
+        .catch((response)=>{
+            console.log(response)
+        })
     },
     methods: {
         showEpisodeDetail: function(index){
@@ -42,6 +54,7 @@ export default {
     components: {
         episodesCards,
         membersTable,
+        countLineChart,
     }
 }
 </script>
