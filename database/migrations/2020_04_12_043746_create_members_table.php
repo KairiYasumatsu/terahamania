@@ -17,6 +17,7 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->text('name');
             $table->integer('sex');
+            $table->text('image_src');
             $table->timestamps();
         });
     }
