@@ -30,3 +30,6 @@ Route::get('/episode/{id}', 'EpisodeController@getMemberByEpisode');
 
 //最新のエピソード10件に対するpairを全て取得
 Route::get('/latestpair', 'PairController@getLatestPair');
+
+//全てのエピソードに対するpairを全て取得
+Route::get('/allpairs', 'PairController@getAllPairs');
