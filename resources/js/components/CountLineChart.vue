@@ -9,7 +9,6 @@ export default {
         jsonData: {
             deep: true,
             handler: function(){
-                // console.log('hoge',this.jsonData)
                 const startEpisodeIndex = 36;
                 const endEpisodeIndex = 40;
                 const dataLength = endEpisodeIndex - startEpisodeIndex + 1
@@ -21,12 +20,9 @@ export default {
                 let i = 0
                 for(let j of Object.keys(this.jsonData)) {
                     const data = Array(dataLength)
-                    // console.log('wow', this.jsonData[j])
                     for(let k = 0; k < this.jsonData[j].length; k++){
                         for(let l = startEpisodeIndex; l < endEpisodeIndex+1; l++){
-                            // console.log("poke", this.jsonData[j][k].episode_id)
                             if (this.jsonData[j][k].episode_id == l){
-                                // console.log('fuga', this.jsonData[j][k].count)
                                 data[k] = this.jsonData[j][k].count
                                 break
                             }

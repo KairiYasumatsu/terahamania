@@ -36,7 +36,6 @@ export default {
         axios.get('/api/latestpair/')
         .then((response)=>{
             this.jsonData = response.data[0]
-            // console.log('hoge',this.jsonData)
         })
         .catch((response)=>{
             console.log(response)
