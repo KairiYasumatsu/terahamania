@@ -29,6 +29,7 @@ export default {
     methods:{
         vote: function(){
             console.log(this.picked_boy, this.picked_girl)
+            $emit()
         }
     },
     name:'MembersTable'
