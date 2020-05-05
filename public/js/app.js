@@ -1919,7 +1919,6 @@ __webpack_require__.r(__webpack_exports__);
     jsonData: {
       deep: true,
       handler: function handler() {
-        // console.log('hoge',this.jsonData)
         var startEpisodeIndex = 36;
         var endEpisodeIndex = 40;
         var dataLength = endEpisodeIndex - startEpisodeIndex + 1;
@@ -1934,13 +1933,11 @@ __webpack_require__.r(__webpack_exports__);
 
         for (var _i = 0, _Object$keys = Object.keys(this.jsonData); _i < _Object$keys.length; _i++) {
           var j = _Object$keys[_i];
-          var data = Array(dataLength); // console.log('wow', this.jsonData[j])
+          var data = Array(dataLength);
 
           for (var k = 0; k < this.jsonData[j].length; k++) {
             for (var l = startEpisodeIndex; l < endEpisodeIndex + 1; l++) {
-              // console.log("poke", this.jsonData[j][k].episode_id)
               if (this.jsonData[j][k].episode_id == l) {
-                // console.log('fuga', this.jsonData[j][k].count)
                 data[k] = this.jsonData[j][k].count;
                 break;
               }
@@ -2102,7 +2099,7 @@ __webpack_require__.r(__webpack_exports__);
       return console.log(response);
     });
     axios.get('/api/latestpair/').then(function (response) {
-      _this.jsonData = response.data[0]; // console.log('hoge',this.jsonData)
+      _this.jsonData = response.data[0];
     })["catch"](function (response) {
       console.log(response);
     });
