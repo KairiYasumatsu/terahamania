@@ -2036,14 +2036,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      picked_boy: String,
-      picked_girl: String
+      picked_boy_id: String,
+      picked_girl_id: String
     };
   },
   methods: {
     vote: function vote() {
-      console.log(this.picked_boy, this.picked_girl);
-      $emit();
+      this.$emit("vote", this.picked_boy_id, this.picked_girl_id);
     }
   },
   name: 'MembersTable'
@@ -2071,6 +2070,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2079,19 +2081,19 @@ __webpack_require__.r(__webpack_exports__);
     return {
       episodes: [],
       selectedMembers: {},
-      jsonData: {}
+      jsonData: {},
+      selectedEpisodeID: Number
     };
   },
   created: function created() {
     var _this = this;
 
-    console.log(this.episodes);
     axios.get('/api/episodes/').then(function (response) {
       _this.episodes = response.data.episodes;
       console.log(response.data.episodes[response.data.episodes.length - 2].id);
       return response.data.episodes[response.data.episodes.length - 2].id;
     }).then(function (id) {
-      console.log(id);
+      _this.selectedEpisodeID = id;
       axios.get('/api/episode/' + id).then(function (response) {
         return _this.selectedMembers = response.data;
       });
@@ -2108,9 +2110,17 @@ __webpack_require__.r(__webpack_exports__);
     showEpisodeDetail: function showEpisodeDetail(index) {
       var _this2 = this;
 
-      console.log(index);
-      axios.get('/api/episode/' + index).then(function (response) {
+      this.selectedEpisodeID = index;
+      this.axios.get('/api/episode/' + index).then(function (response) {
         return _this2.selectedMembers = response.data;
+      })["catch"](function (response) {
+        return console.log(response);
+      });
+    },
+    postSelectedMemberIDs: function postSelectedMemberIDs(picked_boy_id, picked_girl_id) {
+      console.log(this.selectedEpisodeID);
+      this.axios.post('/api/vote?episode_id=' + this.selectedEpisodeID + '&boy_id=' + picked_boy_id + '&girl_id=' + picked_girl_id, null).then(function (response) {
+        return console.log(response);
       })["catch"](function (response) {
         return console.log(response);
       });
@@ -71888,18 +71898,18 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.picked_boy,
-                expression: "picked_boy"
+                value: _vm.picked_boy_id,
+                expression: "picked_boy_id"
               }
             ],
             attrs: { type: "radio", id: boy.id },
             domProps: {
               value: boy.id,
-              checked: _vm._q(_vm.picked_boy, boy.id)
+              checked: _vm._q(_vm.picked_boy_id, boy.id)
             },
             on: {
               change: function($event) {
-                _vm.picked_boy = boy.id
+                _vm.picked_boy_id = boy.id
               }
             }
           }),
@@ -71920,18 +71930,18 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.picked_girl,
-                expression: "picked_girl"
+                value: _vm.picked_girl_id,
+                expression: "picked_girl_id"
               }
             ],
             attrs: { type: "radio", id: girl.id },
             domProps: {
               value: girl.id,
-              checked: _vm._q(_vm.picked_girl, girl.id)
+              checked: _vm._q(_vm.picked_girl_id, girl.id)
             },
             on: {
               change: function($event) {
-                _vm.picked_girl = girl.id
+                _vm.picked_girl_id = girl.id
               }
             }
           }),
@@ -71975,7 +71985,10 @@ var render = function() {
         attrs: { jsonData: _vm.jsonData }
       }),
       _vm._v(" "),
-      _c("members-table", { attrs: { members: _vm.selectedMembers } }),
+      _c("members-table", {
+        attrs: { members: _vm.selectedMembers },
+        on: { vote: _vm.postSelectedMemberIDs }
+      }),
       _vm._v(" "),
       _c("episodes-cards", {
         attrs: { episodes: _vm.episodes },

@@ -1,7 +1,10 @@
 <template>
     <div>
         <count-line-chart style="width:50%;" v-bind:jsonData="jsonData"></count-line-chart>
-        <members-table v-bind:members="selectedMembers"></members-table>
+        <members-table 
+          v-bind:members="selectedMembers"
+          v-on:vote="postSelectedMemberIDs"
+        ></members-table>
         <episodes-cards v-on:selectEpisode="showEpisodeDetail" v-bind:episodes="episodes"></episodes-cards>
     </div>
 </template>
@@ -15,11 +18,11 @@ export default {
         return{
             episodes: [],
             selectedMembers: {},
-            jsonData: {}
+            jsonData: {},
+            selectedEpisodeID: Number,
         }
     },
     created: function () {
-        console.log(this.episodes)
         axios.get('/api/episodes/')
         .then((response) => {
             this.episodes = response.data.episodes
@@ -27,7 +30,7 @@ export default {
             return response.data.episodes[response.data.episodes.length-2].id
         })
         .then((id)=>{
-            console.log(id)
+            this.selectedEpisodeID = id
             axios.get('/api/episode/'+id)
             .then(response => this.selectedMembers = response.data)
         })
@@ -43,9 +46,15 @@ export default {
     },
     methods: {
         showEpisodeDetail: function(index){
-            console.log(index)
-            axios.get('/api/episode/'+index)
+            this.selectedEpisodeID = index
+            this.axios.get('/api/episode/'+index)
             .then(response => this.selectedMembers = response.data)
+            .catch(response => console.log(response))
+        },
+        postSelectedMemberIDs: function(picked_boy_id, picked_girl_id){
+            console.log(this.selectedEpisodeID)
+            this.axios.post('/api/vote?episode_id='+this.selectedEpisodeID+'&boy_id='+picked_boy_id+'&girl_id='+picked_girl_id,null)
+            .then(response => console.log(response))
             .catch(response => console.log(response))
         }
     },
