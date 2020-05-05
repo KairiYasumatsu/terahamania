@@ -1,11 +1,18 @@
 <template>
     <div>
-        <count-line-chart style="width:50%;" v-bind:jsonData="jsonData"></count-line-chart>
+        <count-line-chart 
+          style="width:50%;" 
+          v-bind:jsonData="jsonData"
+          v-bind:range="range"
+        ></count-line-chart>
         <members-table 
           v-bind:members="selectedMembers"
           v-on:vote="postSelectedMemberIDs"
         ></members-table>
-        <episodes-cards v-on:selectEpisode="showEpisodeDetail" v-bind:episodes="episodes"></episodes-cards>
+        <episodes-cards 
+          v-on:selectEpisode="showEpisodeDetail" 
+          v-bind:episodes="episodes"
+        ></episodes-cards>
     </div>
 </template>
 
@@ -19,6 +26,7 @@ export default {
             episodes: [],
             selectedMembers: {},
             jsonData: {},
+            range:{},
             selectedEpisodeID: Number,
         }
     },
@@ -26,7 +34,6 @@ export default {
         axios.get('/api/episodes/')
         .then((response) => {
             this.episodes = response.data.episodes
-            console.log(response.data.episodes[response.data.episodes.length-2].id)
             return response.data.episodes[response.data.episodes.length-2].id
         })
         .then((id)=>{
@@ -38,7 +45,8 @@ export default {
 
         axios.get('/api/latestpair/')
         .then((response)=>{
-            this.jsonData = response.data[0]
+            this.range = response.data[0].range
+            this.jsonData = response.data[0].selectedInfo
         })
         .catch((response)=>{
             console.log(response)
@@ -52,7 +60,6 @@ export default {
             .catch(response => console.log(response))
         },
         postSelectedMemberIDs: function(picked_boy_id, picked_girl_id){
-            console.log(this.selectedEpisodeID)
             this.axios.post('/api/vote?episode_id='+this.selectedEpisodeID+'&boy_id='+picked_boy_id+'&girl_id='+picked_girl_id,null)
             .then(response => console.log(response))
             .catch(response => console.log(response))
