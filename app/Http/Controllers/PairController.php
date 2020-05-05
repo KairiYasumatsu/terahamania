@@ -28,8 +28,8 @@ class PairController extends Controller
 
         //該当するメンバー情報を追加して成形
         $selected_pairs = $selected_pairs->map(function ($pair){
-            $boys_info = $this->getMemberImagebyId($pair->boys_id);
-            $girls_info = $this->getMemberImagebyId($pair->girls_id);
+            $boys_info = $this->getMemberInfobyId($pair->boys_id);
+            $girls_info = $this->getMemberInfobyId($pair->girls_id);
             $collection = collect([
                 'key_ids' => $pair->key_ids, 
                 'count' => $pair->count,
@@ -66,8 +66,8 @@ class PairController extends Controller
 
         //該当するメンバー情報を追加して成形
         $selected_pairs = $selected_pairs->map(function ($pair){
-            $boys_info = $this->getMemberImagebyId($pair->boys_id);
-            $girls_info = $this->getMemberImagebyId($pair->girls_id);
+            $boys_info = $this->getMemberInfobyId($pair->boys_id);
+            $girls_info = $this->getMemberInfobyId($pair->girls_id);
             $collection = collect([
                 'key_ids' => $pair->key_ids, 
                 'count' => $pair->count,
@@ -95,11 +95,11 @@ class PairController extends Controller
         return response()->json([$selected_pairsBykey_ids],200,[],JSON_UNESCAPED_UNICODE);
     }
 
-    public function getMemberImagebyId($id)
+    public function getMemberInfobyId($id)
     {
         $selected_member = DB::table('members')
         ->where('id', $id)
-        ->select('image_src')
+        ->select('name', 'image_src')
         ->get();
         return $selected_member;
     }
