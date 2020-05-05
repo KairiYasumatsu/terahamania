@@ -45,16 +45,17 @@ class PairController extends Controller
         //key_idsでグループ化
         $selected_pairsBykey_ids = $selected_pairs->groupBy("key_ids");
 
-        //各組み合わせで最初と最後のepuisode_idを追加
-        $selected_pairsBykey_ids = $selected_pairsBykey_ids->map(function ($item){
-            $episode_num = $item->pluck('episode_id');
-            $start = $episode_num->first();
-            $end = $episode_num->last();
-            $collection = $item->merge(['start' => $start, 'end' => $end]);
-            return $collection;
-        });
+        $range = collect([
+            'start' => $start,
+            'end' => $end
+        ]);
 
-        return response()->json([$selected_pairsBykey_ids],200,[],JSON_UNESCAPED_UNICODE);
+        $selected_pairs_collection = collect([
+            'selectedInfo' => $selected_pairsBykey_ids,
+            'range' => $range
+        ]);
+
+        return response()->json([$selected_pairs_collection],200,[],JSON_UNESCAPED_UNICODE);
     }
 
     public function getAllPairs()
@@ -91,7 +92,6 @@ class PairController extends Controller
             $collection = $item->merge(['start' => $start, 'end' => $end]);
             return $collection;
         });
-
         return response()->json([$selected_pairsBykey_ids],200,[],JSON_UNESCAPED_UNICODE);
     }
 
