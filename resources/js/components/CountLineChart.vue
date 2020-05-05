@@ -1,16 +1,18 @@
 <script>
 import { Line } from 'vue-chartjs'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 export default {
     extends: Line,
     props:{
-        jsonData: Object
+        jsonData: Object,
+        range: Object
     },
     watch:{
         jsonData: {
             deep: true,
             handler: function(){
-                const startEpisodeIndex = 36;
-                const endEpisodeIndex = 40;
+                const startEpisodeIndex = this.range.start;
+                const endEpisodeIndex = this.range.end;
                 const dataLength = endEpisodeIndex - startEpisodeIndex + 1
                 const labels = []
                 for (let h = startEpisodeIndex;h < endEpisodeIndex+1;h++){
@@ -18,6 +20,7 @@ export default {
                 }
                 const datasets = []
                 let i = 0
+                //オブジェクトのキーを取得してループ
                 for(let j of Object.keys(this.jsonData)) {
                     const data = Array(dataLength)
                     for(let k = 0; k < this.jsonData[j].length; k++){
@@ -33,11 +36,11 @@ export default {
                         data: data,
                         borderColor: `rgb(${((i + 1) * 100)%255}, ${((i + 1) * 200)%255}, ${((i + 1) * 300)%255}`,
                         fill: false,
-                        lineTension: 0.1
+                        lineTension: 0.1,
                     }
                     i ++ 
                 }
-                console.log(datasets)
+                this.addPlugin(ChartDataLabels)
                 this.renderChart(
                     {
                         "labels": labels,
@@ -51,6 +54,13 @@ export default {
                                     suggestedMin: 0,
                                 }
                             }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                formatter: function(value, context) {
+                                    return context.chart.data.datasets[context.dataIndex].label;
+                                }
+                            }
                         }
                     }
                 )
