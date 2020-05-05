@@ -2023,9 +2023,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     members: Object
+  },
+  data: function data() {
+    return {
+      picked_boy_id: String,
+      picked_girl_id: String
+    };
+  },
+  methods: {
+    vote: function vote() {
+      this.$emit("vote", this.picked_boy_id, this.picked_girl_id);
+    }
   },
   name: 'MembersTable'
 });
@@ -2052,6 +2070,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2060,19 +2081,19 @@ __webpack_require__.r(__webpack_exports__);
     return {
       episodes: [],
       selectedMembers: {},
-      jsonData: {}
+      jsonData: {},
+      selectedEpisodeID: Number
     };
   },
   created: function created() {
     var _this = this;
 
-    console.log(this.episodes);
     axios.get('/api/episodes/').then(function (response) {
       _this.episodes = response.data.episodes;
       console.log(response.data.episodes[response.data.episodes.length - 2].id);
       return response.data.episodes[response.data.episodes.length - 2].id;
     }).then(function (id) {
-      console.log(id);
+      _this.selectedEpisodeID = id;
       axios.get('/api/episode/' + id).then(function (response) {
         return _this.selectedMembers = response.data;
       });
@@ -2089,9 +2110,17 @@ __webpack_require__.r(__webpack_exports__);
     showEpisodeDetail: function showEpisodeDetail(index) {
       var _this2 = this;
 
-      console.log(index);
-      axios.get('/api/episode/' + index).then(function (response) {
+      this.selectedEpisodeID = index;
+      this.axios.get('/api/episode/' + index).then(function (response) {
         return _this2.selectedMembers = response.data;
+      })["catch"](function (response) {
+        return console.log(response);
+      });
+    },
+    postSelectedMemberIDs: function postSelectedMemberIDs(picked_boy_id, picked_girl_id) {
+      console.log(this.selectedEpisodeID);
+      this.axios.post('/api/vote?episode_id=' + this.selectedEpisodeID + '&boy_id=' + picked_boy_id + '&girl_id=' + picked_girl_id, null).then(function (response) {
+        return console.log(response);
       })["catch"](function (response) {
         return console.log(response);
       });
@@ -71863,7 +71892,30 @@ var render = function() {
       "tr",
       { staticClass: "boys-row" },
       _vm._l(_vm.members.boys, function(boy) {
-        return _c("td", { key: boy.id }, [_vm._v("名前:" + _vm._s(boy.name))])
+        return _c("td", { key: boy.id }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.picked_boy_id,
+                expression: "picked_boy_id"
+              }
+            ],
+            attrs: { type: "radio", id: boy.id },
+            domProps: {
+              value: boy.id,
+              checked: _vm._q(_vm.picked_boy_id, boy.id)
+            },
+            on: {
+              change: function($event) {
+                _vm.picked_boy_id = boy.id
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: boy.id } }, [_vm._v(_vm._s(boy.name))])
+        ])
       }),
       0
     ),
@@ -71872,10 +71924,35 @@ var render = function() {
       "tr",
       { staticClass: "girls-row" },
       _vm._l(_vm.members.girls, function(girl) {
-        return _c("td", { key: girl.id }, [_vm._v("名前:" + _vm._s(girl.name))])
+        return _c("td", { key: girl.id }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.picked_girl_id,
+                expression: "picked_girl_id"
+              }
+            ],
+            attrs: { type: "radio", id: girl.id },
+            domProps: {
+              value: girl.id,
+              checked: _vm._q(_vm.picked_girl_id, girl.id)
+            },
+            on: {
+              change: function($event) {
+                _vm.picked_girl_id = girl.id
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: girl.id } }, [_vm._v(_vm._s(girl.name))])
+        ])
       }),
       0
-    )
+    ),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.vote } }, [_vm._v("投票する")])
   ])
 }
 var staticRenderFns = []
@@ -71908,7 +71985,10 @@ var render = function() {
         attrs: { jsonData: _vm.jsonData }
       }),
       _vm._v(" "),
-      _c("members-table", { attrs: { members: _vm.selectedMembers } }),
+      _c("members-table", {
+        attrs: { members: _vm.selectedMembers },
+        on: { vote: _vm.postSelectedMemberIDs }
+      }),
       _vm._v(" "),
       _c("episodes-cards", {
         attrs: { episodes: _vm.episodes },
