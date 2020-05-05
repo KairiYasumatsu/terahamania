@@ -2100,14 +2100,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     })["catch"](function (response) {
       return console.log(response);
-    }); // axios.get('/api/latestpair/')
-    // .then((response)=>{
-    //     this.jsonData = response.data[0]
-    //     // console.log('hoge',this.jsonData)
-    // })
-    // .catch((response)=>{
-    //     console.log(response)
-    // })
+    });
+    axios.get('/api/latestpair/').then(function (response) {
+      _this.jsonData = response.data[0]; // console.log('hoge',this.jsonData)
+    })["catch"](function (response) {
+      console.log(response);
+    });
   },
   methods: {
     showEpisodeDetail: function showEpisodeDetail(index) {
@@ -71975,6 +71973,11 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("count-line-chart", {
+        staticStyle: { width: "50%" },
+        attrs: { jsonData: _vm.jsonData }
+      }),
+      _vm._v(" "),
       _c("members-table", { attrs: { members: _vm.selectedMembers } }),
       _vm._v(" "),
       _c("episodes-cards", {
