@@ -1,6 +1,6 @@
 <template>
     <div>
-        <count-line-chart style="width:50%;" v-bind:jsonData="jsonData"></count-line-chart>
+        <!-- <count-line-chart style="width:50%;" v-bind:jsonData="jsonData"></count-line-chart> -->
         <members-table v-bind:members="selectedMembers"></members-table>
         <episodes-cards v-on:selectEpisode="showEpisodeDetail" v-bind:episodes="episodes"></episodes-cards>
     </div>
@@ -33,14 +33,14 @@ export default {
         })
         .catch(response => console.log(response))
 
-        axios.get('/api/latestpair/')
-        .then((response)=>{
-            this.jsonData = response.data[0]
-            // console.log('hoge',this.jsonData)
-        })
-        .catch((response)=>{
-            console.log(response)
-        })
+        // axios.get('/api/latestpair/')
+        // .then((response)=>{
+        //     this.jsonData = response.data[0]
+        //     // console.log('hoge',this.jsonData)
+        // })
+        // .catch((response)=>{
+        //     console.log(response)
+        // })
     },
     methods: {
         showEpisodeDetail: function(index){
