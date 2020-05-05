@@ -45,11 +45,13 @@ class PairController extends Controller
         //key_idsでグループ化
         $selected_pairsBykey_ids = $selected_pairs->groupBy("key_ids");
 
+        //取得する期間を定義
         $range = collect([
             'start' => $start,
             'end' => $end
         ]);
 
+        //データを成形
         $selected_pairs_collection = collect([
             'selectedInfo' => $selected_pairsBykey_ids,
             'range' => $range
@@ -67,31 +69,33 @@ class PairController extends Controller
 
         //該当するメンバー情報を追加して成形
         $selected_pairs = $selected_pairs->map(function ($pair){
-            $boys_info = $this->getMemberInfobyId($pair->boys_id);
-            $girls_info = $this->getMemberInfobyId($pair->girls_id);
             $collection = collect([
                 'key_ids' => $pair->key_ids, 
                 'count' => $pair->count,
                 'episode_id' => $pair->episode_id,
                 'boys_id' => $pair->boys_id,
-                'boys_info' => $boys_info,
                 'girls_id' => $pair->girls_id,
-                'girls_info' => $girls_info
             ]);
             return $collection;
         });
-        
+
         //key_idsでグループ化
         $selected_pairsBykey_ids = $selected_pairs->groupBy("key_ids");
-
-        //各組み合わせで最初と最後のepuisode_idを追加
+        
+        //各keyでエピソードidごとにデータを成形
         $selected_pairsBykey_ids = $selected_pairsBykey_ids->map(function ($item){
-            $episode_num = $item->pluck('episode_id');
-            $start = $episode_num->first();
-            $end = $episode_num->last();
-            $collection = $item->merge(['start' => $start, 'end' => $end]);
-            return $collection;
+            $CountByEpisode = $item->pluck('count','episode_id');
+            $item_first = $item->first();
+            $boys_info = $this->getMemberInfobyId($item_first['boys_id']);
+            $girls_info = $this->getMemberInfobyId($item_first['girls_id']);
+            $arrayByEpisode = collect([
+                'CountsByEpisode' => $CountByEpisode,
+                'boys_info' => $boys_info[0],
+                'girls_info' => $girls_info[0]
+            ]);
+            return $arrayByEpisode;
         });
+
         return response()->json([$selected_pairsBykey_ids],200,[],JSON_UNESCAPED_UNICODE);
     }
 
