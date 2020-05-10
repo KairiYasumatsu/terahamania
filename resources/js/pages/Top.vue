@@ -60,7 +60,11 @@ export default {
             .catch(response => console.log(response))
         },
         postSelectedMemberIDs: function(picked_boy_id, picked_girl_id){
-            this.axios.post('/api/vote?episode_id='+this.selectedEpisodeID+'&boy_id='+picked_boy_id+'&girl_id='+picked_girl_id,null)
+            axios.post('/api/vote', {
+                episode_id: this.selectedEpisodeID,
+                boys_id: picked_boy_id,
+                girls_id: picked_girl_id
+            })
             .then(response => console.log(response))
             .catch(response => console.log(response))
         }

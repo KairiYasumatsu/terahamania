@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Pair;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,6 +98,12 @@ class PairController extends Controller
         });
 
         return response()->json([$selected_pairsBykey_ids],200,[],JSON_UNESCAPED_UNICODE);
+    }
+
+    //投票された情報から、該当するpairのcountをプラス1
+    public function updateCount(Request $request)
+    {
+        Pair::where("episode_id", request("episode_id"))->where('boys_id', request("boys_id"))->where('girls_id', request("girls_id"))->increment("count");
     }
 
     public function getMemberInfobyId($id)
