@@ -11,7 +11,9 @@
     <body>
             @include('common.header')
 
-            @yield('top')
+            <div id="main">
+                @yield('content')
+            </div>
 
             @include('common.footer')
             <script src="{{ mix('js/app.js') }}"></script> 

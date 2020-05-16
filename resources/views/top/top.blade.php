@@ -1,5 +1,5 @@
 @extends('layout')
 
-@section('top')
+@section('content')
     @include('top.top_content')
 @endsection
