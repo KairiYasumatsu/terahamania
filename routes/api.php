@@ -33,3 +33,6 @@ Route::get('/latestpair', 'PairController@getLatestPair');
 
 //全てのエピソードに対するpairを全て取得
 Route::get('/allpairs', 'PairController@getAllPairs');
+
+//vue側から投票データを取得
+Route::post('/vote', 'PairController@updateCount');

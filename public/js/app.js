@@ -2137,7 +2137,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     postSelectedMemberIDs: function postSelectedMemberIDs(picked_boy_id, picked_girl_id) {
-      this.axios.post('/api/vote?episode_id=' + this.selectedEpisodeID + '&boy_id=' + picked_boy_id + '&girl_id=' + picked_girl_id, null).then(function (response) {
+      axios.post('/api/vote', {
+        episode_id: this.selectedEpisodeID,
+        boys_id: picked_boy_id,
+        girls_id: picked_girl_id
+      }).then(function (response) {
         return console.log(response);
       })["catch"](function (response) {
         return console.log(response);
@@ -85948,8 +85952,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/sugiura/Desktop/terahamania/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/sugiura/Desktop/terahamania/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/kairiyasumatsu/src/terahamania/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/kairiyasumatsu/src/terahamania/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
