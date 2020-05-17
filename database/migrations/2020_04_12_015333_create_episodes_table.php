@@ -17,6 +17,7 @@ class CreateEpisodesTable extends Migration
             $table->id();
             $table->integer('number');
             $table->unsignedBigInteger('series_id');
+            $table->text('title');
             $table->timestamps();
         });
     }
