@@ -65,7 +65,17 @@ export default {
                 boys_id: picked_boy_id,
                 girls_id: picked_girl_id
             })
-            .then(response => console.log(response))
+            .then((response) => {
+                    console.log(response)
+                    axios.get('/api/latestpair/')
+                    .then((response)=>{
+                        this.range = response.data[0].range
+                        this.jsonData = response.data[0].selectedInfo
+                    })
+                    .catch((response)=>{
+                        console.log(response)
+                    })
+                })
             .catch(response => console.log(response))
         }
     },
