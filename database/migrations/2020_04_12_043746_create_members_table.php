@@ -18,6 +18,8 @@ class CreateMembersTable extends Migration
             $table->text('name');
             $table->integer('sex');
             $table->text('image_src');
+            $table->text('occupation');
+            $table->date('birth_date');
             $table->timestamps();
         });
     }
