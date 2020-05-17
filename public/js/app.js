@@ -2041,6 +2041,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     members: Object
@@ -73331,7 +73333,14 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { attrs: { for: boy.id } }, [_vm._v(_vm._s(boy.name))])
+          _c("label", { attrs: { for: boy.id } }, [_vm._v(_vm._s(boy.name))]),
+          _vm._v(" "),
+          _c("div", [
+            _c("img", {
+              staticStyle: { width: "10rem" },
+              attrs: { src: boy.image_src, alt: "boy.name" }
+            })
+          ])
         ])
       }),
       0
@@ -73363,7 +73372,14 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { attrs: { for: girl.id } }, [_vm._v(_vm._s(girl.name))])
+          _c("label", { attrs: { for: girl.id } }, [_vm._v(_vm._s(girl.name))]),
+          _vm._v(" "),
+          _c("div", [
+            _c("img", {
+              staticStyle: { width: "10rem" },
+              attrs: { src: girl.image_src, alt: "girl.name" }
+            })
+          ])
         ])
       }),
       0
