@@ -13,6 +13,7 @@
           v-on:selectEpisode="showEpisodeDetail" 
           v-bind:episodes="episodes"
         ></episodes-cards>
+        <router-view/>
     </div>
 </template>
 

@@ -21,14 +21,19 @@ window.Vue = require('vue');
 import Top from './pages/Top'
 import axios from 'axios' //追記
 import VueAxios from 'vue-axios' //追記
+import VueRouter from 'vue-router' ///追記
+
+import router from './router'
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.use(VueAxios, axios) 
+Vue.use(VueAxios, axios);
+Vue.use(VueRouter);
 const app = new Vue({
     el: '#app',
+    router,
     components: {
         Top
     }
