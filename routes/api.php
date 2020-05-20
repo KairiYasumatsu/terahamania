@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EpisodeController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,7 @@ Route::get('/episodes', function(Request $request){
     return response()->json(['episodes' => $episodes]);
 });
 
-//取得したidにひもづくメンバーを返すapi
+//取得したエピソードidにひもづくメンバーを返すapi
 Route::get('/episode/{id}', 'EpisodeController@getMemberByEpisode');
 
 //最新のエピソード10件に対するpairを全て取得
@@ -36,3 +37,6 @@ Route::get('/allpairs', 'PairController@getAllPairs');
 
 //vue側から投票データを取得
 Route::post('/vote', 'PairController@updateCount');
+
+//メンバーidに紐づく、メンバー取得
+Route::get('/member/{id}', 'MemberController@getMemberbyId');
