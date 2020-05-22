@@ -4,7 +4,7 @@ import memberDetail from './pages/memberDetail.vue';
 import Top from './pages/Top.vue';
 
 export default new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes: [
         {
             path: '/',

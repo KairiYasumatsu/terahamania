@@ -1,17 +1,16 @@
 <template>
     <div>
         <count-line-chart 
-          style="width:50%;" 
-          v-bind:jsonData="jsonData"
-          v-bind:range="range"
+            v-bind:jsonData="jsonData"
+            v-bind:range="range"
         ></count-line-chart>
         <members-table 
-          v-bind:members="selectedMembers"
-          v-on:vote="postSelectedMemberIDs"
+            v-bind:members="selectedMembers"
+            v-on:vote="postSelectedMemberIDs"
         ></members-table>
         <episodes-cards 
-          v-on:selectEpisode="showEpisodeDetail" 
-          v-bind:episodes="episodes"
+            v-on:selectEpisode="showEpisodeDetail" 
+            v-bind:episodes="episodes"
         ></episodes-cards>
         <router-view/>
     </div>
