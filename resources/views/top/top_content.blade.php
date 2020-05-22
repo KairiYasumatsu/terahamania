@@ -1,3 +1,3 @@
 <div id='app'>
-    <top></top>
+    <router-view></router-view>
 </div>
